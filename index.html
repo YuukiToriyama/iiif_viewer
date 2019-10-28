@@ -19,16 +19,17 @@
         <h1>IIIF Viewer</h1>
         <p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
         <form name="input_uri" action="index.html">
-            <input type="text" name="uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json">
+            <input type="text" name="uri" id="uri"
+                placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json">
             <input type="button" value="アクセス" onclick="Submit()">
         </form>
     </header>
     <main id="main">
-            <div id="image">
-                <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-                    <p>閲覧したい画像を選択してください</p>
-                </div>
+        <div id="image">
+            <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+                <p>閲覧したい画像を選択してください</p>
             </div>
+        </div>
         <div id="container">
             <!-- app.js内の関数showImagesによって描画されます -->
             <!--
@@ -43,8 +44,8 @@
                 <small>2</small>
             </div>
             -->
+            <p>マニフェスト内の画像がサムネイル形式で表示されます</p>
         </div>
-        <p>マニフェスト内の画像がサムネイル形式で表示されます</p>
     </main>
     <div id="side">
         <!-- app.js内の関数showMetadataによって描画されます -->

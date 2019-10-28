@@ -4,7 +4,7 @@ function getManifest(uri) {
     var manifest = null;
     var httpObj = new XMLHttpRequest();
     httpObj.open("GET", uri, true);
-    httpObj.onload = function() {
+    httpObj.onload = function () {
         manifest = JSON.parse(this.responseText);
         showMetadata(manifest);
         showImages(manifest);
@@ -14,12 +14,12 @@ function getManifest(uri) {
 
 function showImages(data) {
     var container = document.getElementById("container");
-    
+
     var html = "";
     data.sequences[0].canvases.forEach(elm => {
         html = html + `<div class="page"><a href="javascript:changeImage('` + elm.images[0].resource['@id'] + `');"><img src="${elm.thumbnail['@id']}" alt="${elm.label}"></a><small>${elm.label}</small></div>`;
     });
-    
+
     container.innerHTML = html;
 }
 
@@ -32,7 +32,7 @@ function showMetadata(data) {
     });
     html = html + `<table>${tmp}</table>`;
     html = html + `<img src="${data.logo}" alt="${data.attribution}">`;
-    
+
     sideBar.innerHTML = html;
 }
 

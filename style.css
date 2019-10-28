@@ -13,13 +13,21 @@ body {
     padding: 10px;
 }
 
+/* header内要素ここから */
+form > input {
+    font-size: 120%;
+}
+input#uri {
+    width: 50%;
+}
+
 #main {
     width: 60%;
     float: left;
     margin-bottom: 10px;
     margin-right: 10px;
     padding: 10px;
-    background: #afa;
+    background: rgb(75, 150, 187);
 }
 
 /* main内要素ここから */
@@ -83,5 +91,6 @@ body {
 #footer {
     clear: both;
     width: 100%;
-    background: #ffa;
+    background: #faa;
+    padding: 10px;
 }
