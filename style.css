@@ -1,0 +1,84 @@
+/* style.css */
+
+body {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#header {
+    width: 100%;
+    background: #faa;
+    margin-bottom: 10px;
+}
+
+#main {
+    width: 63%;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    background: #afa;
+}
+
+/* main内要素ここから */
+#image {
+    width: auto;
+    margin: 10px;
+    background: #000;
+    text-align: center;
+    color: #fff;
+}
+#image > img {
+    width: 100%;
+}
+
+#container {
+    display: grid;
+    width: auto;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+#container > .page {
+    float: left;
+    width: 1fr;
+    padding: 0px;
+}
+#container img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    transition: transform 0.5s linear;
+}
+#container img:hover {
+    transform: scale3d(1.5, 1.5, 1);
+}
+
+
+/*ここまで */
+
+#side {
+    width: 35%;
+    float: right;
+    margin-bottom: 10px;
+    background: #aaf;
+}
+
+/* side内要素ここから */
+#side > table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    padding: 0;
+}
+#side > table tr {
+    background: #fff;
+    border-bottom: 2px solid #fff;
+}
+#side > table tr:nth-child(even) {
+    background: #eee;
+}
+/* ここまで */
+
+#footer {
+    clear: both;
+    width: 100%;
+    background: #ffa;
+}
