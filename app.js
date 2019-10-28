@@ -17,7 +17,7 @@ function showImages(data) {
     
     var html = "";
     data.sequences[0].canvases.forEach(elm => {
-        html = html + `<div class="page"><a href="${elm['@id']}"><img src="${elm.thumbnail['@id']}" alt="${elm.label}"></a><small>${elm.label}</small></div>`;
+        html = html + `<div class="page"><a href="javascript:changeImage('` + elm.images[0].resource['@id'] + `');"><img src="${elm.thumbnail['@id']}" alt="${elm.label}"></a><small>${elm.label}</small></div>`;
     });
     
     container.innerHTML = html;
@@ -34,4 +34,12 @@ function showMetadata(data) {
     html = html + `<img src="${data.logo}" alt="${data.attribution}">`;
     
     sideBar.innerHTML = html;
+}
+
+function changeImage(uri) {
+    var imageArea = document.getElementById("image");
+
+    var html = `<img src="${uri}" alt="main image">`;
+
+    imageArea.innerHTML = html;
 }
