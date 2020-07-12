@@ -54,7 +54,7 @@ const manifestToObjects = manifest => {
 
 	showMetadata(metadata);
 	showThumbnails(canvases)
-	changeImage(1);
+	changeImage(0);
 }
 
 // メタデータを表示
@@ -69,14 +69,22 @@ const showMetadata = metadata => {
 // サムネイルを表示
 const showThumbnails = canvases => {
 	let div = document.getElementById("thumbnails");
-	let thumbnails = canvases.map(canvas => [canvas["label"], canvas["thumbnail"]["@id"]]);
-	let html = thumbnails.map(elm => '<div class="page"><a href="javascript:changeImage(' + elm[0] + ');"><img src="' + elm[1] + '"></a><small>' + elm[0] + '</small></div>').join("");
+	let thumbnails = [];
+	canvases.forEach((canvas, index) => {
+		// iiifバージョンによる違い？
+		if (canvas["thumbnail"]["@id"] == undefined) {
+			thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
+		} else {
+			thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
+		}
+	})
+	let html = thumbnails.map(elm => '<div class="page"><a href="javascript:changeImage(' + elm[0] + ');"><img src="' + elm[2] + '"></a><small>' + elm[1] + '</small></div>').join("");
 	div.innerHTML = html;
 }
 
 // 画像を変更
 const changeImage = id => {
-	let canvas = canvases[id - 1];
+	let canvas = canvases[id];
 	let resource = canvas["images"][0]["resource"]
 	let image = {
 		url: resource["@id"],
