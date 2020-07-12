@@ -1,96 +1,70 @@
 /* style.css */
 
 body {
-    width: 90%;
-    margin: 0 auto;
-    font-family: "Lato", "Noto Sans JP", "Yu Gothic Medium", "YuGothic", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic";
+	width: 90%;
+	margin: 0 auto;
+	font-family: "Lato", "Noto Sans JP", "Yu Gothic Medium", "YuGothic", "Hiragino Kaku Gothic ProN", "Meiryo", "MS PGothic";
 }
 
 #header {
-    width: 100%;
-    background: #faa;
-    margin-bottom: 10px;
-    padding: 10px;
+	width: 100%;
+	background: #faa;
+	margin-bottom: 10px;
+	padding-top: 10px;
 }
 
 /* header内要素ここから */
 form > input {
-    font-size: 120%;
+	font-size: 120%;
 }
 input#uri {
-    width: 50%;
-}
-
-#main {
-    width: 60%;
-    float: left;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    padding: 10px;
-    background: rgb(75, 150, 187);
-}
-
-/* main内要素ここから */
-#image {
-    width: auto;
-    background: #000;
-    text-align: center;
-    color: #fff;
-}
-#image > img {
-    width: 100%;
-}
-
-#container {
-    display: grid;
-    width: auto;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-}
-#container > .page {
-    float: left;
-    width: 1fr;
-    padding: 0px;
-    transition: transform 0.5s linear;
-}
-#container > .page:hover {
-    transform: scale3d(1.5, 1.5, 1);
-}
-#container img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
+	width: 50%;
 }
 
 
-/*ここまで */
-
-#side {
-    width: calc(40% - 50px);
-    float: right;
-    margin-bottom: 10px;
-    background: #aaf;
-    padding: 10px;
-    font-size: 70%;
+#viewer {
+	width: 100%;
+	height: 60vh;
+	margin-bottom: 10px;
 }
 
-/* side内要素ここから */
-#side > table {
-    border-collapse: collapse;
-    margin: 0 auto;
+#material-detail {
+	width: 100%;
+	background: yellow;
+	margin-bottom: 10px;
 }
-#side > table tr {
-    background: #fff;
-    border-bottom: 2px solid #fff;
+
+#thumbnails {
+	width: 100%;
+	display: grid;
+	background: green;
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: repeat(4, 1fr);
 }
-#side > table tr:nth-child(even) {
-    background: #eee;
+#thumbnails > .page {
+	float: left;
+	width: 1fr;
+	padding: 0px;
+	transition: transform 0.5s linear;
 }
-/* ここまで */
+/*
+#thumbnails > .page:hover {
+	transform: scale3d(1.5, 1.5, 1);
+}
+*/
+#thumbnails img {
+	width: 90%;
+	height: 90%;
+	object-fit: contain;
+}
+
+#thumbs {
+	background: green;
+	margin-bottom: 10px;
+} 
 
 #footer {
-    clear: both;
-    width: 100%;
-    background: #faa;
-    padding: 10px;
+	width: 100%;
+	background: #faa;
+	padding-bottom: 10px;
 }

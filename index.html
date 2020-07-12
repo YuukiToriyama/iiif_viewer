@@ -1,87 +1,80 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>iiif viewer</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript">
-        function Submit() {
-            getManifest(input_uri.uri.value);
-        }
-    </script>
-</head>
-
-<body>
-    <header id="header">
-        <h1>IIIF Viewer</h1>
-        <p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
-        <form name="input_uri" action="index.html">
-            <input type="text" name="uri" id="uri"
-                placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json">
-            <input type="button" value="アクセス" onclick="Submit()">
-        </form>
-    </header>
-    <main id="main">
-        <div id="image">
-            <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
-                <p>閲覧したい画像を選択してください</p>
-            </div>
-        </div>
-        <div id="container">
-            <!-- app.js内の関数showImagesによって描画されます -->
-            <!--
-            <div class="page">
-                <a href="">
-                        <img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
-                </a>
-                <small>1</small>
-            </div>
-            <div class="page">
-                <img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
-                <small>2</small>
-            </div>
-            -->
-            <p>マニフェスト内の画像がサムネイル形式で表示されます</p>
-        </div>
-    </main>
-    <div id="side">
-        <!-- app.js内の関数showMetadataによって描画されます -->
-        <!--
-        <h2>古事記 : 国宝真福寺本. 上</h2>
-        <table>
-            <tbody>
-                <tr>
-                    <td>Persistent ID</td>
-                    <td>info:ndljp/pid/1184132</td>
-                </tr>
-                <tr>
-                    <td>Title</td>
-                    <td>古事記 : 国宝真福寺本. 上</td>
-                </tr>
-                <tr>
-                    <td>Publisher</td>
-                    <td>京都印書館</td>
-                </tr>
-                <tr>
-                    <td>Publication Date (W3CDTF fortmat)</td>
-                    <td>1945</td>
-                </tr>
-                <tr>
-                    <td>URL</td>
-                    <td>http://dl.ndl.go.jp/info:ndljp/pid/1184132</td>
-                </tr>
-            </tbody>
-        </table>
-        <img src="http://dl.ndl.go.jp/resources/images/dlicon.png" alt="国立国会図書館 National Diet Library, JAPAN">
-        -->
-        <p>サイドバーにはマニフェストに書かれたメタデータが表示されます</p>
-    </div>
-    <footer id="footer">
-        <small>Copyright 2019 Yuuki Toriyama</small>
-    </footer>
-</body>
-
+	<head>
+		<meta charset="UTF-8">
+		<title>iiif viewer</title>
+		<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+	</head>
+	<body>
+		<header id="header">
+			<h1>IIIF Viewer</h1>
+			<p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
+			<form>
+				<input type="text" id="manifest-uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json">
+				<input type="button" id="submit" value="アクセス">
+			</form>
+		</header>
+		<main id="main">
+			<div id="viewer"></div>
+			<div id="material-detail">
+				<details id="metadata">
+					<summary>この資料の情報を表示</summary>
+					<!-- app.js内の関数showMetadataによって描画されます -->
+					<!--
+					<table>
+						<tbody>
+							<tr>
+								<td>Persistent ID</td>
+								<td>info:ndljp/pid/1184132</td>
+							</tr>
+							<tr>
+								<td>Title</td>
+								<td>古事記 : 国宝真福寺本. 上</td>
+							</tr>
+							<tr>
+								<td>Publisher</td>
+								<td>京都印書館</td>
+							</tr>
+							<tr>
+								<td>Publication Date (W3CDTF fortmat)</td>
+								<td>1945</td>
+							</tr>
+							<tr>
+								<td>URL</td>
+								<td>http://dl.ndl.go.jp/info:ndljp/pid/1184132</td>
+							</tr>
+						</tbody>
+					</table>
+					-->
+				</details>
+			</div>
+			<div>
+				<details id="thumbs">
+					<summary style="background: green;">サムネイル一覧を表示</summary>
+					<div id="thumbnails">
+						<!-- app.js内の関数showThumbnailsによって描画されます -->
+						<!--
+						<div class="page">
+							<a href="">
+									<img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
+							</a>
+							<small>1</small>
+						</div>
+						<div class="page">
+							<img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
+							<small>2</small>
+						</div>
+						-->
+					</div>
+				</details>
+			</div>
+		</main>
+		<footer id="footer">
+			<small>Copyright 2020 Yuuki Toriyama</small>
+		</footer>
+	</body>
+	<script type="text/javascript" src="app.js"></script>
 </html>
