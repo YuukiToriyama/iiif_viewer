@@ -1,6 +1,8 @@
 /* app.js */
 
-var canvases = [];
+var canvases;
+var attribution;
+var imageLayer;
 
 // leaflet.jsをもちいて画像を表示する
 var viewer = L.map("viewer", {
@@ -8,15 +10,6 @@ var viewer = L.map("viewer", {
 	minZoom: 1,
 	crs: L.CRS.Simple
 });
-
-/*
-var image = {
-	//url: "https://www.dl.ndl.go.jp/api/iiif/2532216/R0000006/0,0,5933,4920/742,/0/default.jpg",
-	url: "super_azusa_353.jpg",
-	width: 742,
-	height: 615
-}
-*/
 
 // テキストフォームにマニフェストのURLを入力すると表示ができるしくみ
 var submitButton = document.getElementById("submit");
@@ -27,14 +20,18 @@ submitButton.addEventListener("click", () => {
 
 // 画像を表示
 const showImage = image => {
+	if (viewer.hasLayer(imageLayer)) {
+		viewer.removeLayer(imageLayer);
+	}
 	var imageBounds = L.latLngBounds(
 		[0, 0],
 		[image.height/30, image.width/30]
 	);
 	viewer.fitBounds(imageBounds);
-	L.imageOverlay(image.url, imageBounds, {
-		attribution: ' <a href="#">hogehoge.com</a>'
-	}).addTo(viewer);
+	imageLayer = L.imageOverlay(image.url, imageBounds, {
+		attribution: '<a href="' + attribution["license"] + '" target="_blank">' + attribution["attribution"] + '</a>'
+	})
+	imageLayer.addTo(viewer);
 }
 
 
@@ -42,16 +39,13 @@ const showImage = image => {
 const getManifest = async uri => {
 	const response = await fetch(uri).catch(err => {alert(err); return err});
 	const manifest = await response.json();
-	//showMetadata(manifest);
-	//showImages(manifest);
-	console.log(manifest);
 	manifestToObjects(manifest);
 }
 
 const manifestToObjects = manifest => {
 	var metadata = manifest["metadata"];
-	var attribution = {
-		"licence": manifest["license"],
+	attribution = {
+		"license": manifest["license"],
 		"attribution": manifest["attribution"],
 		"logo": manifest["logo"],
 		"seeAlso": manifest["seeAlso"]
