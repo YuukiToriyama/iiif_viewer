@@ -2,19 +2,20 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>iiif viewer</title>
+		<title>IIIF Image Viewer | YUUKIToriyama | GitHub Pages</title>
 		<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Noto+Sans+JP:400,700" rel="stylesheet">
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
 		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+		<script src="node_modules/leaflet-iiif/leaflet-iiif.js"></script>
 	</head>
 	<body>
 		<header id="header">
 			<h1>IIIF Viewer</h1>
 			<p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
 			<form>
-				<input type="text" id="manifest-uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json">
-				<datalist>
+				<input type="text" id="manifest-uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
+				<datalist id="iiif-manifest-example">
 					<option value="https://www.dl.ndl.go.jp/api/iiif/1185374/manifest.json"></option>
 					<option value="https://data.getty.edu/museum/api/iiif/673/manifest.json"></option>
 					<option value="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/01/manifest.json"></option>

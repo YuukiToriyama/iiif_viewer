@@ -6,9 +6,9 @@ var imageLayer;
 
 // leaflet.jsをもちいて画像を表示する
 var viewer = L.map("viewer", {
-	maxZoom: 13,
-	minZoom: 1,
-	crs: L.CRS.Simple
+	center: [0,0],
+	crs: L.CRS.Simple,
+	zoom: 0
 });
 
 // テキストフォームにマニフェストのURLを入力すると表示ができるしくみ
@@ -23,6 +23,7 @@ const showImage = image => {
 	if (viewer.hasLayer(imageLayer)) {
 		viewer.removeLayer(imageLayer);
 	}
+	/*
 	var imageBounds = L.latLngBounds(
 		[0, 0],
 		[image.height/30, image.width/30]
@@ -30,6 +31,11 @@ const showImage = image => {
 	viewer.fitBounds(imageBounds);
 	imageLayer = L.imageOverlay(image.url, imageBounds, {
 		attribution: '<a href="' + attribution["license"] + '" target="_blank">' + attribution["attribution"] + '</a>'
+	})
+	*/
+	imageLayer = L.tileLayer.iiif(image.manifest + "/info.json", {
+		attribution: '<a href="' + attribution["license"] + '" target="_blank">' + attribution["attribution"] + '</a>',
+		fitBounds: true
 	})
 	imageLayer.addTo(viewer);
 }
@@ -72,10 +78,21 @@ const showThumbnails = canvases => {
 	let thumbnails = [];
 	canvases.forEach((canvas, index) => {
 		// iiifバージョンによる違い？
+		/*
 		if (canvas["thumbnail"]["@id"] == undefined) {
 			thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
 		} else {
 			thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
+		}
+		*/
+		if (canvas.thumbnail != undefined) {
+			if (canvas.thumbnail["@id"] != undefined) {
+				thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
+			} else {
+				thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
+			}
+		} else {
+			thumbnails.push([index, canvas["label"], "image-not-found.png"])
 		}
 	})
 	let html = thumbnails.map(elm => '<div class="page"><a href="javascript:changeImage(' + elm[0] + ');"><img src="' + elm[2] + '"></a><small>' + elm[1] + '</small></div>').join("");
@@ -90,7 +107,8 @@ const changeImage = id => {
 		url: resource["@id"],
 		format: resource["image/jpeg"],
 		width: resource["width"],
-		height: resource["height"]
+		height: resource["height"],
+		manifest: resource["service"]["@id"]
 	}
 	showImage(image);
 }
