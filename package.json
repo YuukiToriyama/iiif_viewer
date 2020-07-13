@@ -1,0 +1,27 @@
+{
+  "name": "iiif_viewer",
+  "version": "1.0.0",
+  "description": "IIIF Image Viewer",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "python3 -m http.server 8989; firefox -new-tab localhost:8989 &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YUUKIToriyama/iiif_viewer.git"
+  },
+  "keywords": [
+    "iiif"
+  ],
+  "author": "YUUKIToriyama",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YUUKIToriyama/iiif_viewer/issues"
+  },
+  "homepage": "https://github.com/YUUKIToriyama/iiif_viewer#readme",
+  "dependencies": {
+    "leaflet": "^1.6.0",
+    "leaflet-iiif": "^3.0.0"
+  }
+}
