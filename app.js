@@ -92,7 +92,7 @@ const showThumbnails = canvases => {
 				thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
 			}
 		} else {
-			thumbnails.push([index, canvas["label"], "image-not-found.png"])
+			thumbnails.push([index, canvas["label"], "image/image-not-found.png"])
 		}
 	})
 	let html = thumbnails.map(elm => '<div class="page"><a href="javascript:changeImage(' + elm[0] + ');"><img src="' + elm[2] + '"></a><small>' + elm[1] + '</small></div>').join("");
