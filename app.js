@@ -1,114 +1,127 @@
 /* app.js */
 
-var canvases;
-var attribution;
-var imageLayer;
+const ImageViewer = function(id) {
+	// 変数の初期化
+	this.attribution;
+	this.canvases;
+	this.metadata;
+	this.imageLayer;
+	this.viewer = L.map(id, {
+		center: [0, 0],
+		crs: L.CRS.Simple,
+		zoom: 0
+	});
 
-// leaflet.jsをもちいて画像を表示する
-var viewer = L.map("viewer", {
-	center: [0,0],
-	crs: L.CRS.Simple,
-	zoom: 0
-});
+	
+	// マニフェストを取得
+	this.getManifest = async function (uri) {
+		const response = await fetch(uri).catch(err => {alert(err); return err});
+		const manifest = await response.json();
+		this.manifestToObjects(manifest);
+	};
+	this.manifestToObjects = function (manifest) {
+		this.metadata = manifest["metadata"];
+		this.attribution = {
+			"license": manifest["license"],
+			"attribution": manifest["attribution"],
+			"logo": manifest["logo"],
+			"seeAlso": manifest["seeAlso"]
+		}
+		this.canvases = manifest["sequences"][0]["canvases"];
+	
+		this.showMetadata();
+		this.showThumbnails()
+		this.changeImage(0);
+	}
+	// メタデータを表示
+	this.showMetadata = function () {
+		let details = document.getElementById(id).parentNode.getElementsByClassName("metadata")[0];
+		let html = "<summary>この資料の情報を表示</summary>";
+		let tmp = this.metadata.map(elm => "<tr><td>" + elm["label"] + "</td><td>" + elm["value"] + "</td></tr>").join("");
+		html = html + "<table>" + tmp + "</table>";
+		details.innerHTML = html;
+	}
 
-// テキストフォームにマニフェストのURLを入力すると表示ができるしくみ
-var submitButton = document.getElementById("submit");
-submitButton.addEventListener("click", () => {
-	var manifestURI = document.getElementById("manifest-uri").value;
-	getManifest(manifestURI);
+	// サムネイルを表示
+	this.showThumbnails = function () {
+		let div = document.getElementById(id).parentNode.getElementsByClassName("thumbnails")[0];
+		let thumbnails = [];
+		this.canvases.forEach((canvas, index) => {
+			if (canvas.thumbnail != undefined) {
+				if (canvas.thumbnail["@id"] != undefined) {
+					thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
+				} else {
+					thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
+				}
+			} else {
+				thumbnails.push([index, canvas["label"], "image/image-not-found.png"])
+			}
+		})
+		let html = thumbnails.map(elm => `<div class="page"><a href="javascript:${id}.changeImage(${elm[0]});"><img src="${elm[2]}"></a><small>${elm[1]}</small></div>`).join("");
+		div.innerHTML = html;
+	}
+	
+	// 画像を変更
+	this.changeImage = function (Pageid) {
+		let canvas = this.canvases[Pageid];
+		let resource = canvas["images"][0]["resource"]
+		let image = {
+			url: resource["@id"],
+			format: resource["image/jpeg"],
+			width: resource["width"],
+			height: resource["height"],
+			manifest: resource["service"]["@id"]
+		}
+		this.showImage(image);
+	}
+
+	// 画像を表示
+	this.showImage = function (image) {
+		if (this.viewer.hasLayer(this.imageLayer)) {
+			this.viewer.removeLayer(this.imageLayer);
+		}
+		this.imageLayer = L.tileLayer.iiif(image.manifest + "/info.json", {
+			attribution: '<a href="' + this.attribution["license"] + '" target="_blank">' + this.attribution["attribution"] + '</a>',
+			fitBounds: true
+		})
+		this.imageLayer.addTo(this.viewer);
+	}
+
+	// テキストフォームに入力されたマニフェストを表示する
+	document.getElementById(id).parentNode.getElementsByClassName("btn")[0].addEventListener("click", () => {
+		let manifestURI = document.getElementById(id).parentNode.getElementsByClassName("uri")[0].value;
+		this.getManifest(manifestURI);
+	})
+
+	this.credit = "(C)2020 YUUKIToriyama All Rights Reserved.";
+}
+
+// インスタンスの作成
+var viewer_1 = new ImageViewer("viewer_1");
+var viewer_2 = new ImageViewer("viewer_2");
+
+// トグルスイッチで二画面表示モードに切り替え
+var main1 = document.getElementById("main_1");
+var main2 = document.getElementById("main_2");
+var toggleSwitch = document.getElementById("switch1");
+toggleSwitch.checked = false;
+toggleSwitch.addEventListener("change", () => {
+	if (toggleSwitch.checked == true) {
+		// スイッチがonになったらmain2を表示させる
+		main2.hidden = false;
+		main1.style.width = "50%";
+		main1.style.float = "left";
+		main2.style.width = "49%";
+		main2.style.float = "right";
+		viewer_1.viewer.invalidateSize();
+		viewer_2.viewer.invalidateSize();
+	} else {
+		main2.hidden = true;
+		main1.style.width = "100%";
+		viewer_1.viewer.invalidateSize();
+	}
 })
 
-// 画像を表示
-const showImage = image => {
-	if (viewer.hasLayer(imageLayer)) {
-		viewer.removeLayer(imageLayer);
-	}
-	/*
-	var imageBounds = L.latLngBounds(
-		[0, 0],
-		[image.height/30, image.width/30]
-	);
-	viewer.fitBounds(imageBounds);
-	imageLayer = L.imageOverlay(image.url, imageBounds, {
-		attribution: '<a href="' + attribution["license"] + '" target="_blank">' + attribution["attribution"] + '</a>'
-	})
-	*/
-	imageLayer = L.tileLayer.iiif(image.manifest + "/info.json", {
-		attribution: '<a href="' + attribution["license"] + '" target="_blank">' + attribution["attribution"] + '</a>',
-		fitBounds: true
-	})
-	imageLayer.addTo(viewer);
-}
-
-
-// マニフェストを取得
-const getManifest = async uri => {
-	const response = await fetch(uri).catch(err => {alert(err); return err});
-	const manifest = await response.json();
-	manifestToObjects(manifest);
-}
-
-const manifestToObjects = manifest => {
-	var metadata = manifest["metadata"];
-	attribution = {
-		"license": manifest["license"],
-		"attribution": manifest["attribution"],
-		"logo": manifest["logo"],
-		"seeAlso": manifest["seeAlso"]
-	}
-	canvases = manifest["sequences"][0]["canvases"];
-
-	showMetadata(metadata);
-	showThumbnails(canvases)
-	changeImage(0);
-}
-
-// メタデータを表示
-const showMetadata = metadata => {
-	let details = document.getElementById("metadata");
-	let html = "<summary>この資料の情報を表示</summary>";
-	let tmp = metadata.map(elm => "<tr><td>" + elm["label"] + "</td><td>" + elm["value"] + "</td></tr>").join("");
-	html = html + "<table>" + tmp + "</table>";
-	details.innerHTML = html;
-}
-
-// サムネイルを表示
-const showThumbnails = canvases => {
-	let div = document.getElementById("thumbnails");
-	let thumbnails = [];
-	canvases.forEach((canvas, index) => {
-		// iiifバージョンによる違い？
-		/*
-		if (canvas["thumbnail"]["@id"] == undefined) {
-			thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
-		} else {
-			thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
-		}
-		*/
-		if (canvas.thumbnail != undefined) {
-			if (canvas.thumbnail["@id"] != undefined) {
-				thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
-			} else {
-				thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
-			}
-		} else {
-			thumbnails.push([index, canvas["label"], "image/image-not-found.png"])
-		}
-	})
-	let html = thumbnails.map(elm => '<div class="page"><a href="javascript:changeImage(' + elm[0] + ');"><img src="' + elm[2] + '"></a><small>' + elm[1] + '</small></div>').join("");
-	div.innerHTML = html;
-}
-
-// 画像を変更
-const changeImage = id => {
-	let canvas = canvases[id];
-	let resource = canvas["images"][0]["resource"]
-	let image = {
-		url: resource["@id"],
-		format: resource["image/jpeg"],
-		width: resource["width"],
-		height: resource["height"],
-		manifest: resource["service"]["@id"]
-	}
-	showImage(image);
-}
+// jieter/Leaflet.Syncを用いて2つの画面の操作をリンクさせる
+viewer_1["viewer"].sync(viewer_2["viewer"], {syncCursor: true});
+viewer_2["viewer"].sync(viewer_1["viewer"], {syncCursor: true});
