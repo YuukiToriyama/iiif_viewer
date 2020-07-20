@@ -92,14 +92,19 @@ const ImageViewer = function(id) {
 		let manifestURI = document.getElementById(id).parentNode.getElementsByClassName("uri")[0].value;
 		this.getManifest(manifestURI);
 	})
+
+	this.credit = "(C)2020 YUUKIToriyama All Rights Reserved.";
 }
 
+// インスタンスの作成
 var viewer_1 = new ImageViewer("viewer_1");
 var viewer_2 = new ImageViewer("viewer_2");
 
+// トグルスイッチで二画面表示モードに切り替え
 var main1 = document.getElementById("main_1");
 var main2 = document.getElementById("main_2");
 var toggleSwitch = document.getElementById("switch1");
+toggleSwitch.checked = false;
 toggleSwitch.addEventListener("change", () => {
 	if (toggleSwitch.checked == true) {
 		// スイッチがonになったらmain2を表示させる
@@ -108,8 +113,15 @@ toggleSwitch.addEventListener("change", () => {
 		main1.style.float = "left";
 		main2.style.width = "49%";
 		main2.style.float = "right";
+		viewer_1.viewer.invalidateSize();
+		viewer_2.viewer.invalidateSize();
 	} else {
 		main2.hidden = true;
 		main1.style.width = "100%";
+		viewer_1.viewer.invalidateSize();
 	}
 })
+
+// jieter/Leaflet.Syncを用いて2つの画面の操作をリンクさせる
+viewer_1["viewer"].sync(viewer_2["viewer"], {syncCursor: true});
+viewer_2["viewer"].sync(viewer_1["viewer"], {syncCursor: true});

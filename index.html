@@ -13,14 +13,16 @@
 		<link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
 		<script src="node_modules/leaflet/dist/leaflet.js"></script>
 		<script src="node_modules/leaflet-iiif/leaflet-iiif.js"></script>
+		<script src="node_modules/leaflet.sync/L.Map.Sync.js"></script>
 	</head>
 	<body>
 		<header id="header">
 			<h1>IIIF Image Viewer</h1>
 			<p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
+			<p>トグルスイッチを操作すると二画面表示モードに切替できます</p>
 		</header>
 		<form class="switchArea">
-			<input type="checkbox" id="switch1" checked>
+			<input type="checkbox" id="switch1">
 			<label for="switch1"><span></span></label>
 			<div id="swImg"></div>
 		</form>
