@@ -94,5 +94,22 @@ const ImageViewer = function(id) {
 	})
 }
 
-var viewer1 = new ImageViewer("viewer_1");
-var viewer2 = new ImageViewer("viewer_2");
+var viewer_1 = new ImageViewer("viewer_1");
+var viewer_2 = new ImageViewer("viewer_2");
+
+var main1 = document.getElementById("main_1");
+var main2 = document.getElementById("main_2");
+var toggleSwitch = document.getElementById("switch1");
+toggleSwitch.addEventListener("change", () => {
+	if (toggleSwitch.checked == true) {
+		// スイッチがonになったらmain2を表示させる
+		main2.hidden = false;
+		main1.style.width = "50%";
+		main1.style.float = "left";
+		main2.style.width = "49%";
+		main2.style.float = "right";
+	} else {
+		main2.hidden = true;
+		main1.style.width = "100%";
+	}
+})
