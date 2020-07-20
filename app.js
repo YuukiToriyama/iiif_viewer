@@ -35,7 +35,7 @@ const ImageViewer = function(id) {
 	}
 	// メタデータを表示
 	this.showMetadata = function () {
-		let details = document.getElementById("metadata");
+		let details = document.getElementById(id).parentNode.getElementsByClassName("metadata")[0];
 		let html = "<summary>この資料の情報を表示</summary>";
 		let tmp = this.metadata.map(elm => "<tr><td>" + elm["label"] + "</td><td>" + elm["value"] + "</td></tr>").join("");
 		html = html + "<table>" + tmp + "</table>";
@@ -44,17 +44,9 @@ const ImageViewer = function(id) {
 
 	// サムネイルを表示
 	this.showThumbnails = function () {
-		let div = document.getElementById("thumbnails");
+		let div = document.getElementById(id).parentNode.getElementsByClassName("thumbnails")[0];
 		let thumbnails = [];
 		this.canvases.forEach((canvas, index) => {
-			// iiifバージョンによる違い？
-			/*
-			if (canvas["thumbnail"]["@id"] == undefined) {
-				thumbnails.push([index, canvas["label"], canvas["thumbnail"]])
-			} else {
-				thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
-			}
-			*/
 			if (canvas.thumbnail != undefined) {
 				if (canvas.thumbnail["@id"] != undefined) {
 					thumbnails.push([index, canvas["label"], canvas["thumbnail"]["@id"]])
@@ -96,10 +88,11 @@ const ImageViewer = function(id) {
 	}
 
 	// テキストフォームに入力されたマニフェストを表示する
-	document.getElementById("btn-" + id).addEventListener("click", () => {
-		let manifestURI = document.getElementById("uri-" + id).value;
+	document.getElementById(id).parentNode.getElementsByClassName("btn")[0].addEventListener("click", () => {
+		let manifestURI = document.getElementById(id).parentNode.getElementsByClassName("uri")[0].value;
 		this.getManifest(manifestURI);
 	})
 }
 
-var viewer1 = new ImageViewer("viewer1");
+var viewer1 = new ImageViewer("viewer_1");
+var viewer2 = new ImageViewer("viewer_2");

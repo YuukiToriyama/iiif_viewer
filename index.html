@@ -18,72 +18,57 @@
 		<header id="header">
 			<h1>IIIF Image Viewer</h1>
 			<p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
+		</header>
+		<form class="switchArea">
+			<input type="checkbox" id="switch1">
+			<label for="switch1"><span></span></label>
+			<div id="swImg"></div>
+		</form>
+		<main id="main_1">
+			<div class="viewer" id="viewer_1"></div>
 			<form>
-				<input type="text" id="uri-viewer1" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
+				<input type="text" class="uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
 				<datalist id="iiif-manifest-example">
 					<option value="https://www.dl.ndl.go.jp/api/iiif/1185374/manifest.json"></option>
 					<option value="https://data.getty.edu/museum/api/iiif/673/manifest.json"></option>
 					<option value="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/01/manifest.json"></option>
 					<option value="https://www.wdl.org/en/item/3058/iiif/manifest.json"></option>
 				</datalist>
-				<input type="button" id="btn-viewer1" value="アクセス">
+				<input type="button" class="btn" value="アクセス">
 			</form>
-		</header>
-		<main id="main">
-			<div id="viewer1"></div>
-			<div id="material-detail">
-				<details id="metadata">
+			<div class="material-detail">
+				<details class="metadata">
 					<summary>この資料の情報を表示</summary>
 					<!-- app.js内の関数showMetadataによって描画されます -->
-					<!--
-					<table>
-						<tbody>
-							<tr>
-								<td>Persistent ID</td>
-								<td>info:ndljp/pid/1184132</td>
-							</tr>
-							<tr>
-								<td>Title</td>
-								<td>古事記 : 国宝真福寺本. 上</td>
-							</tr>
-							<tr>
-								<td>Publisher</td>
-								<td>京都印書館</td>
-							</tr>
-							<tr>
-								<td>Publication Date (W3CDTF fortmat)</td>
-								<td>1945</td>
-							</tr>
-							<tr>
-								<td>URL</td>
-								<td>http://dl.ndl.go.jp/info:ndljp/pid/1184132</td>
-							</tr>
-						</tbody>
-					</table>
-					-->
 				</details>
 			</div>
 			<div>
-				<details id="thumbs">
+				<details class="thumbs">
 					<summary style="background: green;">サムネイル一覧を表示</summary>
-					<div id="thumbnails">
+					<div class="thumbnails">
 						<!-- app.js内の関数showThumbnailsによって描画されます -->
-						<!--
-						<div class="page">
-							<a href="">
-									<img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
-							</a>
-							<small>1</small>
-						</div>
-						<div class="page">
-							<img src="https://www.dl.ndl.go.jp/api/iiif/1184132/F0000002/full/full/0/default.jpg" alt="">
-							<small>2</small>
-						</div>
-						-->
 					</div>
 				</details>
 			</div>
 		</main>
+		<main id="main_2" hidden>
+			<div class="viewer" id="viewer_2"></div>
+			<form>
+				<input type="text" class="uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
+				<input type="button" class="btn" value="アクセス">
+			</form>
+			<div class="material-detail">
+				<details class="metadata">
+					<summary>この資料の情報を表示</summary>
+				</details>
+			</div>
+			<div>
+				<details class="thumbs">
+					<summary style="background: green;">サムネイル一覧を表示</summary>
+					<div class="thumbnails"></div>
+				</details>
+			</div>
+		</main>	
 		<footer id="footer">
 			<small>Copyright 2020 Yuuki Toriyama</small>
 		</footer>
