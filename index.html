@@ -19,18 +19,18 @@
 			<h1>IIIF Image Viewer</h1>
 			<p>IIIFマニフェストを読み込むと作品を閲覧することができます</p>
 			<form>
-				<input type="text" id="manifest-uri" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
+				<input type="text" id="uri-viewer1" placeholder="https://www.dl.ndl.go.jp/api/iiif/1184132/manifest.json" list="iiif-manifest-example">
 				<datalist id="iiif-manifest-example">
 					<option value="https://www.dl.ndl.go.jp/api/iiif/1185374/manifest.json"></option>
 					<option value="https://data.getty.edu/museum/api/iiif/673/manifest.json"></option>
 					<option value="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/01/manifest.json"></option>
 					<option value="https://www.wdl.org/en/item/3058/iiif/manifest.json"></option>
 				</datalist>
-				<input type="button" id="submit" value="アクセス">
+				<input type="button" id="btn-viewer1" value="アクセス">
 			</form>
 		</header>
 		<main id="main">
-			<div id="viewer"></div>
+			<div id="viewer1"></div>
 			<div id="material-detail">
 				<details id="metadata">
 					<summary>この資料の情報を表示</summary>
