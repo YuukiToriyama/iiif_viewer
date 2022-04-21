@@ -1,29 +1,32 @@
 {
-  "name": "IIIFImageViewer",
+  "name": "iiif-image-viewer",
   "version": "1.1.0",
   "description": "IIIF Image Viewer",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/http-server"
+    "start": "masaba ./ 8989"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/YUUKIToriyama/iiif_viewer.git"
   },
   "keywords": [
-    "iiif", "image viewer"
+    "iiif",
+    "image viewer"
   ],
   "author": "YUUKIToriyama",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/YUUKIToriyama/iiif_viewer/issues"
   },
   "homepage": "https://github.com/YUUKIToriyama/iiif_viewer#readme",
   "dependencies": {
-    "http-server": "^0.12.3",
     "leaflet": "^1.6.0",
     "leaflet-iiif": "^3.0.0",
     "leaflet.sync": "^0.2.4"
+  },
+  "devDependencies": {
+    "@toriyama/masaba": "^0.0.4"
   }
 }
