@@ -27,6 +27,6 @@
     "leaflet.sync": "^0.2.4"
   },
   "devDependencies": {
-    "@toriyama/masaba": "^0.0.4"
+    "@toriyama/masaba": "^0.1.2"
   }
 }
